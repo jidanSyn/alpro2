@@ -1,0 +1,142 @@
+#include <stdio.h>
+//this is such trash code
+int n,  
+    m;
+
+int main() {
+    scanf("%d", &n);
+    scanf("%d", &m);
+    
+    int arr[n][m];
+    
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            scanf("%d", &arr[i][j]);
+        }
+    }
+    
+    showMatrix(n, m, arr);
+    
+    int menu;
+    int find;
+    int multiplier;
+    int comparison;
+
+    printf("1. Mencari letak nilai dalam matriks\n2. Mengalikan Matriks\n3. Menampilkan Transpose Matriks\n4. Menampilkan Refleksi Matriks\n5. Membandingkan Dua Matriks\n");
+    printf("Select: ");
+    scanf("%d", &menu);
+        switch(menu) {
+            case 1:
+            printf("Masukkan nilai yang ingin dicari letaknya: ");
+            scanf("%d", &find);
+            findNumber(arr, find);
+            break;
+            case 2:
+            printf("Masukkan nilai pengali matriks: ");
+            scanf("%d", &multiplier);
+            matrixMultiply(arr, multiplier);
+            break;
+            case 3:
+            transpose(arr);
+            break;
+            case 4:
+            reflect(arr);
+            break;
+            case 5:
+            comparison = compare(arr);
+            switch(comparison) {
+                case 1: printf("Kedua matriks memiliki nilai yang sama!\n"); break;
+                case 2: printf("Kedua matriks memiliki nilai yang berbeda!\n"); break;
+                case 3: printf("Incompatible Matrix! Cannot compare(different matrix size)\n"); break;
+            }
+            break;
+            default:
+            break;
+        }
+    return 0;
+}
+
+
+void showMatrix(int baris, int kolom, int arr[baris][kolom]) {
+    for(int i = 0; i < baris; i++) {
+        for(int j = 0; j < kolom; j++) {
+            printf("%d ", arr[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void findNumber(int arr[n][m], int find) {
+int baris, kolom;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(arr[i][j] == find) {
+                baris = i + 1;
+                kolom = j + 1;
+            }
+        }
+    }
+    printf("Letak dari nilai %d pada matriks yaitu baris ke-%d dan kolom ke-%d\n", find, baris, kolom);
+}
+
+void matrixMultiply(int arr[n][m], int x) {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            arr[i][j] *= x;
+        }
+    } 
+    printf("Matrix Multiplied by %d:\n", x);
+    showMatrix(n, m, arr);
+}
+
+void transpose(int arr[n][m]) {
+    int transposed[m][n];
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            transposed[i][j] = arr[j][i];
+        }
+    }
+    printf("Transposed Matrix:\n");
+    showMatrix(m, n, transposed);
+}
+
+void reflect(int arr[n][m]) {
+    int reflected[n][m];
+    for(int i = 0; i < n; i++) {
+        for(int j = 0, k = m - 1; j < m; j++, k--) {
+            reflected[i][j] = arr[i][k];
+        }
+    }
+    
+    showMatrix(n, m, reflected);
+}
+
+int compare(int arr[n][m]) {
+    int a, b;
+    scanf("%d", &a);
+    scanf("%d", &b);
+    
+    if(a != n || b != m) {
+        return 3;
+    }
+
+    int second[a][b];
+    
+    for(int i = 0; i < a; i++) {
+        for(int j = 0; j < b; j++) {
+            scanf("%d", &second[i][j]);
+        }
+    }
+
+    for(int i = 0; i < a; i++) {
+        for(int j = 0; j < b; j++) {
+            //printf("%d %d\n", arr[i][j], second[i][j]);
+            if(arr[i][j] != second[i][j]) {
+                //printf("test i = %d  j = %d\n", i, j);
+                return 2;
+            }
+        }
+    }
+
+    return 1;
+}
